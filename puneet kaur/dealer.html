@@ -1,0 +1,2818 @@
+g<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>DG ScrapLink - Dealer</title>
+
+<style>
+
+/* =========================
+   GENERAL
+========================= */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f5f7f6;
+    color: #222;
+    padding-bottom: 80px;
+}
+
+button {
+    font-family: inherit;
+    cursor: pointer;
+}
+
+.page {
+    display: none;
+}
+
+.page.active {
+    display: block;
+}
+
+
+/* =========================
+   HEADER
+========================= */
+
+.header {
+    background: white;
+    padding: 16px 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #e5e5e5;
+
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.logo-area {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo {
+    width: 42px;
+    height: 42px;
+    background: #16834a;
+    color: white;
+    border-radius: 12px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.logo-text h2 {
+    font-size: 18px;
+}
+
+.logo-text p {
+    font-size: 12px;
+    color: #777;
+    margin-top: 2px;
+}
+
+.notification {
+    width: 38px;
+    height: 38px;
+
+    border-radius: 50%;
+    border: none;
+
+    background: #f0f3f1;
+
+    font-size: 18px;
+}
+
+
+/* =========================
+   CONTENT
+========================= */
+
+.container {
+    max-width: 700px;
+    margin: auto;
+    padding: 20px 16px;
+}
+
+.page-title {
+    font-size: 25px;
+    margin-bottom: 5px;
+}
+
+.page-subtitle {
+    color: #777;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+
+/* =========================
+   CARDS
+========================= */
+
+.card {
+    background: white;
+    border-radius: 16px;
+    padding: 17px;
+    margin-bottom: 14px;
+
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+
+    margin-bottom: 12px;
+}
+
+.material {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.person {
+    font-size: 13px;
+    color: #777;
+    margin-top: 4px;
+}
+
+.status {
+    padding: 6px 10px;
+    border-radius: 20px;
+
+    font-size: 11px;
+    font-weight: bold;
+}
+
+.status-green {
+    background: #e4f6eb;
+    color: #16834a;
+}
+
+.status-yellow {
+    background: #fff4d6;
+    color: #9a7100;
+}
+
+.status-red {
+    background: #fde8e8;
+    color: #c33;
+}
+
+
+/* =========================
+   DETAILS
+========================= */
+
+.details {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 10px;
+    margin: 12px 0;
+}
+
+.detail {
+    background: #f7f8f8;
+
+    border-radius: 10px;
+    padding: 9px;
+}
+
+.detail-label {
+    font-size: 11px;
+    color: #888;
+}
+
+.detail-value {
+    font-size: 14px;
+    font-weight: bold;
+
+    margin-top: 3px;
+}
+
+
+/* =========================
+   BUTTONS
+========================= */
+
+.primary-btn {
+    width: 100%;
+
+    border: none;
+
+    background: #16834a;
+    color: white;
+
+    padding: 12px;
+
+    border-radius: 10px;
+
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.secondary-btn {
+    width: 100%;
+
+    border: 1px solid #16834a;
+
+    background: white;
+    color: #16834a;
+
+    padding: 11px;
+
+    border-radius: 10px;
+
+    font-weight: bold;
+}
+
+
+/* =========================
+   BOTTOM NAVIGATION
+========================= */
+
+.bottom-nav {
+    position: fixed;
+
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+    height: 68px;
+
+    background: white;
+
+    border-top: 1px solid #ddd;
+
+    display: flex;
+
+    z-index: 50;
+}
+
+.nav-btn {
+    flex: 1;
+
+    border: none;
+
+    background: white;
+
+    color: #777;
+
+    font-size: 10px;
+
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 4px;
+}
+
+.nav-icon {
+    font-size: 19px;
+}
+
+.nav-btn.active {
+    color: #16834a;
+    font-weight: bold;
+}
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (min-width: 700px) {
+
+    .bottom-nav {
+        left: 50%;
+        transform: translateX(-50%);
+
+        max-width: 700px;
+
+        border-radius: 15px 15px 0 0;
+    }
+
+}
+
+</style>
+</head>
+
+
+<body>
+
+
+<!-- =========================
+     HEADER
+========================= -->
+
+<header class="header">
+
+    <div class="logo-area">
+
+        <div class="logo">
+            DG
+        </div>
+
+        <div class="logo-text">
+
+            <h2>DG ScrapLink</h2>
+
+            <p>Dealer Panel</p>
+
+        </div>
+
+    </div>
+
+
+    <button class="notification"
+            onclick="showMessage('No new notifications')">
+
+        🔔
+
+    </button>
+
+</header>
+
+
+
+<!-- =========================
+     EXPLORE PAGE
+========================= -->
+
+<section id="explorePage" class="page active">
+
+<div class="container">
+
+    <h1 class="page-title">
+        Explore Scrap
+    </h1>
+
+    <p class="page-subtitle">
+        Find nearby scrap deals and make an offer.
+    </p>
+
+
+    <!-- PLASTIC -->
+
+    <div class="card">
+
+        <div class="card-top">
+
+            <div>
+
+                <div class="material">
+                    Plastic Scrap
+                </div>
+
+                <div class="person">
+                    Ramesh Kumar
+                </div>
+
+            </div>
+
+
+            <span class="status status-green">
+                Nearby
+            </span>
+
+        </div>
+
+
+        <div class="details">
+
+            <div class="detail">
+
+                <div class="detail-label">
+                    Quantity
+                </div>
+
+                <div class="detail-value">
+                    15 kg
+                </div>
+
+            </div>
+
+
+            <div class="detail">
+
+                <div class="detail-label">
+                    Expected Price
+                </div>
+
+                <div class="detail-value">
+                    ₹280/kg
+                </div>
+
+            </div>
+
+
+            <div class="detail">
+
+                <div class="detail-label">
+                    Distance
+                </div>
+
+                <div class="detail-value">
+                    2.5 km
+                </div>
+
+            </div>
+
+
+            <div class="detail">
+
+                <div class="detail-label">
+                    Posted
+                </div>
+
+                <div class="detail-value">
+                    Today
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <button class="primary-btn"
+                onclick="openOffer('Plastic Scrap','Ramesh Kumar','15 kg','2.5 km')">
+
+            Make Offer
+
+        </button>
+
+    </div>
+
+
+
+    <!-- METAL -->
+
+    <div class="card">
+
+        <div class="card-top">
+
+            <div>
+
+                <div class="material">
+                    Metal Scrap
+                </div>
+
+                <div class="person">
+                    Sunil Kumar
+                </div>
+
+            </div>
+
+
+            <span class="status status-green">
+                Nearby
+            </span>
+
+        </div>
+
+
+        <div class="details">
+
+            <div class="detail">
+
+                <div class="detail-label">
+                    Quantity
+                </div>
+
+                <div class="detail-value">
+                    20 kg
+                </div>
+
+            </div>
+
+
+            <div class="detail">
+
+                <div class="detail-label">
+                    Expected Price
+                </div>
+
+                <div class="detail-value">
+                    ₹270/kg
+                </div>
+
+            </div>
+
+
+            <div class="detail">
+
+                <div class="detail-label">
+                    Distance
+                </div>
+
+                <div class="detail-value">
+                    4.1 km
+                </div>
+
+            </div>
+
+
+            <div class="detail">
+
+                <div class="detail-label">
+                    Posted
+                </div>
+
+                <div class="detail-value">
+                    Today
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <button class="primary-btn"
+                onclick="openOffer('Metal Scrap','Sunil Kumar','20 kg','4.1 km')">
+
+            Make Offer
+
+        </button>
+
+    </div>
+
+
+
+    <!-- PAPER -->
+
+    <div class="card">
+
+        <div class="card-top">
+
+            <div>
+
+                <div class="material">
+                    Paper Scrap
+                </div>
+
+                <div class="person">
+                    Sita Devi
+                </div>
+
+            </div>
+
+
+            <span class="status status-yellow">
+                5.3 km
+            </span>
+
+        </div>
+
+
+        <div class="details">
+
+            <div class="detail">
+
+                <div class="detail-label">
+                    Quantity
+                </div>
+
+                <div class="detail-value">
+                    12 kg
+                </div>
+
+            </div>
+
+
+            <div class="detail">
+
+                <div class="detail-label">
+                    Expected Price
+                </div>
+
+                <div class="detail-value">
+                    ₹150/kg
+                </div>
+
+            </div>
+
+
+            <div class="detail">
+
+                <div class="detail-label">
+                    Distance
+                </div>
+
+                <div class="detail-value">
+                    5.3 km
+                </div>
+
+            </div>
+
+
+            <div class="detail">
+
+                <div class="detail-label">
+                    Posted
+                </div>
+
+                <div class="detail-value">
+                    Yesterday
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <button class="primary-btn"
+                onclick="openOffer('Paper Scrap','Sita Devi','12 kg','5.3 km')">
+
+            Make Offer
+
+        </button>
+
+    </div>
+
+</div>
+
+</section>
+
+
+
+<!-- =========================
+     BOTTOM NAVIGATION
+========================= -->
+
+<nav class="bottom-nav">
+
+    <button class="nav-btn active"
+            onclick="showPage('explorePage',this)">
+
+        <span class="nav-icon">
+            🔎
+        </span>
+
+        Explore
+
+    </button>
+
+
+    <button class="nav-btn"
+            onclick="showPage('scrapsPage',this)">
+
+        <span class="nav-icon">
+            ♻️
+        </span>
+
+        My Scraps
+
+    </button>
+
+
+    <button class="nav-btn"
+            onclick="showPage('offersPage',this)">
+
+        <span class="nav-icon">
+            💬
+        </span>
+
+        Offers
+
+    </button>
+
+
+    <button class="nav-btn"
+            onclick="showPage('transactionsPage',this)">
+
+        <span class="nav-icon">
+            🧾
+        </span>
+
+        Transactions
+
+    </button>
+
+
+    <button class="nav-btn"
+            onclick="showPage('profilePage',this)">
+
+        <span class="nav-icon">
+            👤
+        </span>
+
+        Profile
+
+    </button>
+
+</nav>
+<!-- =====================================================
+     MY SCRAPS PAGE
+===================================================== -->
+
+<section id="scrapsPage" class="page">
+
+<div class="container">
+
+    <h1 class="page-title">My Scraps</h1>
+
+    <p class="page-subtitle">
+        Manage the scrap deals you have accepted.
+    </p>
+
+
+    <div class="summary-grid">
+
+        <div class="summary-card">
+            <div class="summary-number">4</div>
+            <div class="summary-label">Active Deals</div>
+        </div>
+
+        <div class="summary-card">
+            <div class="summary-number">2</div>
+            <div class="summary-label">Ready</div>
+        </div>
+
+        <div class="summary-card">
+            <div class="summary-number">12</div>
+            <div class="summary-label">Collected</div>
+        </div>
+
+    </div>
+
+
+    <div class="tabs">
+
+        <button class="tab active"
+                onclick="scrapTab('active',this)">
+            Active
+        </button>
+
+        <button class="tab"
+                onclick="scrapTab('ready',this)">
+            Ready
+        </button>
+
+        <button class="tab"
+                onclick="scrapTab('collected',this)">
+            Collected
+        </button>
+
+    </div>
+
+
+    <!-- ACTIVE SCRAPS -->
+
+    <div id="activeScraps">
+
+        <div class="card">
+
+            <div class="card-top">
+
+                <div>
+                    <div class="material">Plastic Scrap</div>
+                    <div class="person">Ramesh Kumar</div>
+                </div>
+
+                <span class="status status-green">
+                    Active
+                </span>
+
+            </div>
+
+            <div class="details">
+
+                <div class="detail">
+                    <div class="detail-label">Quantity</div>
+                    <div class="detail-value">15 kg</div>
+                </div>
+
+                <div class="detail">
+                    <div class="detail-label">Price</div>
+                    <div class="detail-value">₹280/kg</div>
+                </div>
+
+                <div class="detail">
+                    <div class="detail-label">Distance</div>
+                    <div class="detail-value">2.5 km</div>
+                </div>
+
+                <div class="detail">
+                    <div class="detail-label">Date</div>
+                    <div class="detail-value">10 Sept</div>
+                </div>
+
+            </div>
+
+            <button class="secondary-btn"
+                    onclick="showMessage('Scrap details opened')">
+                View Scrap
+            </button>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="card-top">
+
+                <div>
+                    <div class="material">Metal Scrap</div>
+                    <div class="person">Sunil Kumar</div>
+                </div>
+
+                <span class="status status-green">
+                    Active
+                </span>
+
+            </div>
+
+            <div class="details">
+
+                <div class="detail">
+                    <div class="detail-label">Quantity</div>
+                    <div class="detail-value">20 kg</div>
+                </div>
+
+                <div class="detail">
+                    <div class="detail-label">Price</div>
+                    <div class="detail-value">₹260/kg</div>
+                </div>
+
+                <div class="detail">
+                    <div class="detail-label">Distance</div>
+                    <div class="detail-value">4.1 km</div>
+                </div>
+
+                <div class="detail">
+                    <div class="detail-label">Date</div>
+                    <div class="detail-value">8 Sept</div>
+                </div>
+
+            </div>
+
+            <button class="secondary-btn"
+                    onclick="showMessage('Scrap details opened')">
+                View Scrap
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- READY SCRAPS -->
+
+    <div id="readyScraps" style="display:none">
+
+        <div class="card">
+
+            <div class="card-top">
+
+                <div>
+                    <div class="material">Paper Scrap</div>
+                    <div class="person">Sita Devi</div>
+                </div>
+
+                <span class="status status-yellow">
+                    Ready
+                </span>
+
+            </div>
+
+            <div class="details">
+
+                <div class="detail">
+                    <div class="detail-label">Quantity</div>
+                    <div class="detail-value">12 kg</div>
+                </div>
+
+                <div class="detail">
+                    <div class="detail-label">Price</div>
+                    <div class="detail-value">₹150/kg</div>
+                </div>
+
+                <div class="detail">
+                    <div class="detail-label">Distance</div>
+                    <div class="detail-value">5.3 km</div>
+                </div>
+
+                <div class="detail">
+                    <div class="detail-label">Pickup</div>
+                    <div class="detail-value">Available</div>
+                </div>
+
+            </div>
+
+            <button class="primary-btn"
+                    onclick="showMessage('Pickup arranged')">
+                Arrange Pickup
+            </button>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="card-top">
+
+                <div>
+                    <div class="material">Cardboard Scrap</div>
+                    <div class="person">Harpreet Singh</div>
+                </div>
+
+                <span class="status status-yellow">
+                    Ready
+                </span>
+
+            </div>
+
+            <div class="details">
+
+                <div class="detail">
+                    <div class="detail-label">Quantity</div>
+                    <div class="detail-value">18 kg</div>
+                </div>
+
+                <div class="detail">
+                    <div class="detail-label">Price</div>
+                    <div class="detail-value">₹170/kg</div>
+                </div>
+
+                <div class="detail">
+                    <div class="detail-label">Distance</div>
+                    <div class="detail-value">3.8 km</div>
+                </div>
+
+                <div class="detail">
+                    <div class="detail-label">Pickup</div>
+                    <div class="detail-value">Available</div>
+                </div>
+
+            </div>
+
+            <button class="primary-btn"
+                    onclick="showMessage('Pickup arranged')">
+                Arrange Pickup
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- COLLECTED SCRAPS -->
+
+    <div id="collectedScraps" style="display:none">
+
+        <div class="card">
+
+            <div class="card-top">
+
+                <div>
+                    <div class="material">Mixed Recyclables</div>
+                    <div class="person">Harpreet Singh</div>
+                </div>
+
+                <span class="status status-green">
+                    Collected
+                </span>
+
+            </div>
+
+            <div class="details">
+
+                <div class="detail">
+                    <div class="detail-label">Quantity</div>
+                    <div class="detail-value">25 kg</div>
+                </div>
+
+                <div class="detail">
+                    <div class="detail-label">Price</div>
+                    <div class="detail-value">₹320/kg</div>
+                </div>
+
+                <div class="detail">
+                    <div class="detail-label">Status</div>
+                    <div class="detail-value">Completed</div>
+                </div>
+
+                <div class="detail">
+                    <div class="detail-label">Date</div>
+                    <div class="detail-value">5 Sept</div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</section>
+
+
+
+<!-- =====================================================
+     OFFERS PAGE
+===================================================== -->
+
+<section id="offersPage" class="page">
+
+<div class="container">
+
+    <h1 class="page-title">My Offers</h1>
+
+    <p class="page-subtitle">
+        Track offers sent to scrap collectors.
+    </p>
+
+
+    <div class="tabs">
+
+        <button class="tab active"
+                onclick="offerTab('accepted',this)">
+            Accepted
+        </button>
+
+        <button class="tab"
+                onclick="offerTab('pending',this)">
+            Pending
+        </button>
+
+        <button class="tab"
+                onclick="offerTab('rejected',this)">
+            Rejected
+        </button>
+
+    </div>
+
+
+    <!-- ACCEPTED -->
+
+    <div id="acceptedOffers">
+
+        <div class="card">
+
+            <div class="card-top">
+
+                <div>
+                    <div class="material">Plastic Scrap</div>
+                    <div class="person">Ramesh Kumar</div>
+                </div>
+
+                <span class="status status-green">
+                    Accepted
+                </span>
+
+            </div>
+
+            <div class="details">
+
+                <div class="detail">
+                    <div class="detail-label">Quantity</div>
+                    <div class="detail-value">15 kg</div>
+                </div>
+
+                <div class="detail">
+                    <div class="detail-label">Your Offer</div>
+                    <div class="detail-value">₹280/kg</div>
+                </div>
+
+                <div class="detail">
+                    <div class="detail-label">Distance</div>
+                    <div class="detail-value">2.5 km</div>
+                </div>
+
+                <div class="detail">
+                    <div class="detail-label">Date</div>
+                    <div class="detail-value">10 Sept</div>
+                </div>
+
+            </div>
+
+            <p style="font-size:13px;color:#16834a;margin-bottom:12px;">
+                ✓ Collector accepted your offer.
+            </p>
+
+            <button class="secondary-btn"
+                    onclick="showMessage('Offer details opened')">
+                View Offer
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- PENDING -->
+
+    <div id="pendingOffers" style="display:none">
+
+        <div class="card">
+
+            <div class="card-top">
+
+                <div>
+                    <div class="material">Metal Scrap</div>
+                    <div class="person">Sunil Kumar</div>
+                </div>
+
+                <span class="status status-yellow">
+                    Pending
+                </span>
+
+            </div>
+
+            <div class="details">
+
+                <div class="detail">
+                    <div class="detail-label">Quantity</div>
+                    <div class="detail-value">20 kg</div>
+                </div>
+
+                <div class="detail">
+                    <div class="detail-label">Your Offer</div>
+                    <div class="detail-value">₹270/kg</div>
+                </div>
+
+                <div class="detail">
+                    <div class="detail-label">Distance</div>
+                    <div class="detail-value">4.1 km</div>
+                </div>
+
+                <div class="detail">
+                    <div class="detail-label">Date</div>
+                    <div class="detail-value">9 Sept</div>
+                </div>
+
+            </div>
+
+            <p style="font-size:13px;color:#777;margin-bottom:12px;">
+                Waiting for collector's response.
+            </p>
+
+            <button class="secondary-btn"
+                    onclick="showMessage('Offer is still pending')">
+                View Offer
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- REJECTED -->
+
+    <div id="rejectedOffers" style="display:none">
+
+        <div class="card">
+
+            <div class="card-top">
+
+                <div>
+                    <div class="material">Paper Scrap</div>
+                    <div class="person">Sita Devi</div>
+                </div>
+
+                <span class="status status-red">
+                    Rejected
+                </span>
+
+            </div>
+
+            <div class="details">
+
+                <div class="detail">
+                    <div class="detail-label">Quantity</div>
+                    <div class="detail-value">12 kg</div>
+                </div>
+
+                <div class="detail">
+                    <div class="detail-label">Your Offer</div>
+                    <div class="detail-value">₹140/kg</div>
+                </div>
+
+                <div class="detail">
+                    <div class="detail-label">Distance</div>
+                    <div class="detail-value">5.3 km</div>
+                </div>
+
+                <div class="detail">
+                    <div class="detail-label">Date</div>
+                    <div class="detail-value">7 Sept</div>
+                </div>
+
+            </div>
+
+            <p style="font-size:13px;color:#c33;margin-bottom:12px;">
+                ✕ Collector did not accept the offer.
+            </p>
+
+            <button class="secondary-btn"
+                    onclick="showMessage('Offer details opened')">
+                View Offer
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+</section>
+<!-- =====================================================
+     TRANSACTIONS PAGE
+===================================================== -->
+
+<section id="transactionsPage" class="page">
+
+<div class="container">
+
+    <h1 class="page-title">Transactions</h1>
+
+    <p class="page-subtitle">
+        View your completed scrap deals.
+    </p>
+
+
+    <!-- SUMMARY -->
+
+    <div class="summary-grid">
+
+        <div class="summary-card">
+            <div class="summary-number">12</div>
+            <div class="summary-label">Total Deals</div>
+        </div>
+
+        <div class="summary-card">
+            <div class="summary-number">246 kg</div>
+            <div class="summary-label">Scrap Collected</div>
+        </div>
+
+        <div class="summary-card">
+            <div class="summary-number">₹38,450</div>
+            <div class="summary-label">Total Paid</div>
+        </div>
+
+    </div>
+
+
+    <!-- PAYMENT FILTER -->
+
+    <div class="tabs">
+
+        <button class="tab active"
+                onclick="transactionFilter('all',this)">
+            All
+        </button>
+
+        <button class="tab"
+                onclick="transactionFilter('cash',this)">
+            Cash
+        </button>
+
+        <button class="tab"
+                onclick="transactionFilter('digital',this)">
+            Digital
+        </button>
+
+    </div>
+
+
+    <!-- TRANSACTION 1 -->
+
+    <div class="transaction-card"
+         data-payment="digital">
+
+        <div class="transaction-top">
+
+            <div>
+
+                <div class="material">
+                    Plastic Scrap
+                </div>
+
+                <div class="person">
+                    Collector: Ramesh Kumar
+                </div>
+
+            </div>
+
+            <span class="status status-green">
+                Digital
+            </span>
+
+        </div>
+
+
+        <div class="details">
+
+            <div class="detail">
+
+                <div class="detail-label">
+                    Weight
+                </div>
+
+                <div class="detail-value">
+                    15 kg
+                </div>
+
+            </div>
+
+
+            <div class="detail">
+
+                <div class="detail-label">
+                    Amount
+                </div>
+
+                <div class="detail-value">
+                    ₹4,200
+                </div>
+
+            </div>
+
+
+            <div class="detail">
+
+                <div class="detail-label">
+                    Date
+                </div>
+
+                <div class="detail-value">
+                    10 Sept 2026
+                </div>
+
+            </div>
+
+
+            <div class="detail">
+
+                <div class="detail-label">
+                    Transaction ID
+                </div>
+
+                <div class="detail-value">
+                    #DGSL1024
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <button class="secondary-btn"
+                onclick="viewReceipt(
+                    'Plastic Scrap',
+                    'Ramesh Kumar',
+                    '15 kg',
+                    '₹4,200',
+                    'Digital',
+                    '10 Sept 2026',
+                    '#DGSL1024'
+                )">
+
+            View Receipt
+
+        </button>
+
+    </div>
+
+
+
+    <!-- TRANSACTION 2 -->
+
+    <div class="transaction-card"
+         data-payment="cash">
+
+        <div class="transaction-top">
+
+            <div>
+
+                <div class="material">
+                    Metal Scrap
+                </div>
+
+                <div class="person">
+                    Collector: Sunil Kumar
+                </div>
+
+            </div>
+
+            <span class="status status-yellow">
+                Cash
+            </span>
+
+        </div>
+
+
+        <div class="details">
+
+            <div class="detail">
+
+                <div class="detail-label">
+                    Weight
+                </div>
+
+                <div class="detail-value">
+                    20 kg
+                </div>
+
+            </div>
+
+
+            <div class="detail">
+
+                <div class="detail-label">
+                    Amount
+                </div>
+
+                <div class="detail-value">
+                    ₹5,200
+                </div>
+
+            </div>
+
+
+            <div class="detail">
+
+                <div class="detail-label">
+                    Date
+                </div>
+
+                <div class="detail-value">
+                    8 Sept 2026
+                </div>
+
+            </div>
+
+
+            <div class="detail">
+
+                <div class="detail-label">
+                    Transaction ID
+                </div>
+
+                <div class="detail-value">
+                    #DGSL1023
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <button class="secondary-btn"
+                onclick="viewReceipt(
+                    'Metal Scrap',
+                    'Sunil Kumar',
+                    '20 kg',
+                    '₹5,200',
+                    'Cash',
+                    '8 Sept 2026',
+                    '#DGSL1023'
+                )">
+
+            View Receipt
+
+        </button>
+
+    </div>
+
+
+
+    <!-- TRANSACTION 3 -->
+
+    <div class="transaction-card"
+         data-payment="digital">
+
+        <div class="transaction-top">
+
+            <div>
+
+                <div class="material">
+                    Paper Scrap
+                </div>
+
+                <div class="person">
+                    Collector: Sita Devi
+                </div>
+
+            </div>
+
+            <span class="status status-green">
+                Digital
+            </span>
+
+        </div>
+
+
+        <div class="details">
+
+            <div class="detail">
+
+                <div class="detail-label">
+                    Weight
+                </div>
+
+                <div class="detail-value">
+                    30 kg
+                </div>
+
+            </div>
+
+
+            <div class="detail">
+
+                <div class="detail-label">
+                    Amount
+                </div>
+
+                <div class="detail-value">
+                    ₹4,500
+                </div>
+
+            </div>
+
+
+            <div class="detail">
+
+                <div class="detail-label">
+                    Date
+                </div>
+
+                <div class="detail-value">
+                    5 Sept 2026
+                </div>
+
+            </div>
+
+
+            <div class="detail">
+
+                <div class="detail-label">
+                    Transaction ID
+                </div>
+
+                <div class="detail-value">
+                    #DGSL1022
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <button class="secondary-btn"
+                onclick="viewReceipt(
+                    'Paper Scrap',
+                    'Sita Devi',
+                    '30 kg',
+                    '₹4,500',
+                    'Digital',
+                    '5 Sept 2026',
+                    '#DGSL1022'
+                )">
+
+            View Receipt
+
+        </button>
+
+    </div>
+
+</div>
+
+</section>
+
+
+
+<!-- =====================================================
+     PROFILE PAGE
+===================================================== -->
+
+<section id="profilePage" class="page">
+
+<div class="container">
+
+    <h1 class="page-title">My Profile</h1>
+
+    <p class="page-subtitle">
+        Manage your dealer information.
+    </p>
+
+
+    <!-- PROFILE CARD -->
+
+    <div class="profile-card">
+
+        <div class="profile-photo">
+            GR
+        </div>
+
+
+        <h2>Green Recycler</h2>
+
+        <p class="dealer-id">
+            Dealer ID: DGDL1024
+        </p>
+
+
+        <span class="verified-badge">
+            ✓ Verified Dealer
+        </span>
+
+    </div>
+
+
+
+    <!-- BASIC INFORMATION -->
+
+    <div class="section-heading">
+        Basic Information
+    </div>
+
+
+    <div class="card">
+
+        <div class="profile-row">
+
+            <span>Phone</span>
+
+            <strong>
+                +91 XXXXX XXXXX
+            </strong>
+
+        </div>
+
+
+        <div class="profile-row">
+
+            <span>Location</span>
+
+            <strong>
+                Ludhiana, Punjab
+            </strong>
+
+        </div>
+
+
+        <div class="profile-row">
+
+            <span>Business Type</span>
+
+            <strong>
+                Recycling Dealer
+            </strong>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- SERVICES -->
+
+    <div class="section-heading">
+        Services
+    </div>
+
+
+    <div class="card">
+
+        <div class="profile-row">
+
+            <span>Materials Accepted</span>
+
+            <strong>
+                Plastic, Metal, Paper
+            </strong>
+
+        </div>
+
+
+        <div class="profile-row">
+
+            <span>Operating Area</span>
+
+            <strong>
+                Ludhiana & nearby areas
+            </strong>
+
+        </div>
+
+
+        <div class="profile-row">
+
+            <span>Pickup Available</span>
+
+            <label class="switch">
+
+                <input type="checkbox"
+                       id="pickupToggle"
+                       checked
+                       onchange="togglePickup()">
+
+                <span class="slider"></span>
+
+            </label>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ACTIVITY -->
+
+    <div class="section-heading">
+        Activity
+    </div>
+
+
+    <div class="summary-grid">
+
+        <div class="summary-card">
+
+            <div class="summary-number">
+                12
+            </div>
+
+            <div class="summary-label">
+                Transactions
+            </div>
+
+        </div>
+
+
+        <div class="summary-card">
+
+            <div class="summary-number">
+                246 kg
+            </div>
+
+            <div class="summary-label">
+                Scrap Collected
+            </div>
+
+        </div>
+
+
+        <div class="summary-card">
+
+            <div class="summary-number">
+                9
+            </div>
+
+            <div class="summary-label">
+                Accepted Deals
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ACCOUNT -->
+
+    <div class="section-heading">
+        Account
+    </div>
+
+
+    <div class="card">
+
+        <button class="profile-action"
+                onclick="showMessage('Edit Profile selected')">
+
+            <span>✏️ Edit Profile</span>
+
+            <span>›</span>
+
+        </button>
+
+
+        <button class="profile-action"
+                onclick="showMessage('Settings selected')">
+
+            <span>⚙️ Settings</span>
+
+            <span>›</span>
+
+        </button>
+
+
+        <button class="profile-action logout"
+                onclick="showMessage('Logout selected')">
+
+            <span>↪ Logout</span>
+
+            <span>›</span>
+
+        </button>
+
+    </div>
+
+</div>
+
+</section>
+
+
+
+<!-- =====================================================
+     RECEIPT POPUP
+===================================================== -->
+
+<div id="receiptModal" class="modal">
+
+    <div class="modal-box">
+
+        <button class="close-btn"
+                onclick="closeReceipt()">
+            ×
+        </button>
+
+
+        <div class="receipt-logo">
+            DG
+        </div>
+
+
+        <h2>Transaction Receipt</h2>
+
+        <p class="receipt-subtitle">
+            DG ScrapLink
+        </p>
+
+
+        <div class="receipt-details">
+
+            <div>
+                <span>Material</span>
+                <strong id="receiptMaterial"></strong>
+            </div>
+
+
+            <div>
+                <span>Collector</span>
+                <strong id="receiptCollector"></strong>
+            </div>
+
+
+            <div>
+                <span>Weight</span>
+                <strong id="receiptWeight"></strong>
+            </div>
+
+
+            <div>
+                <span>Amount Paid</span>
+                <strong id="receiptAmount"></strong>
+            </div>
+
+
+            <div>
+                <span>Payment</span>
+                <strong id="receiptPayment"></strong>
+            </div>
+
+
+            <div>
+                <span>Date</span>
+                <strong id="receiptDate"></strong>
+            </div>
+
+
+            <div>
+                <span>Transaction ID</span>
+                <strong id="receiptId"></strong>
+            </div>
+
+        </div>
+
+
+        <div class="receipt-success">
+            ✓ Transaction completed
+        </div>
+
+
+        <button class="primary-btn"
+                onclick="closeReceipt()">
+
+            Done
+
+        </button>
+
+    </div>
+
+</div>
+
+
+
+<!-- =====================================================
+     OFFER POPUP
+===================================================== -->
+
+<div id="offerModal" class="modal">
+
+    <div class="modal-box">
+
+        <button class="close-btn"
+                onclick="closeOffer()">
+            ×
+        </button>
+
+
+        <div class="receipt-logo">
+            ♻
+        </div>
+
+
+        <h2>Make an Offer</h2>
+
+        <p class="receipt-subtitle">
+            Send your price to the collector.
+        </p>
+
+
+        <div class="offer-summary">
+
+            <div>
+                <span>Scrap</span>
+                <strong id="offerMaterial"></strong>
+            </div>
+
+            <div>
+                <span>Collector</span>
+                <strong id="offerCollector"></strong>
+            </div>
+
+            <div>
+                <span>Quantity</span>
+                <strong id="offerQuantity"></strong>
+            </div>
+
+            <div>
+                <span>Distance</span>
+                <strong id="offerDistance"></strong>
+            </div>
+
+        </div>
+
+
+        <label class="input-label">
+            Your offer price
+        </label>
+
+        <div class="price-input">
+
+            <span>₹</span>
+
+            <input type="number"
+                   id="offerPrice"
+                   placeholder="Enter price per kg">
+
+            <span>/kg</span>
+
+        </div>
+
+
+        <button class="primary-btn"
+                onclick="sendOffer()">
+
+            Send Offer
+
+        </button>
+
+    </div>
+
+</div>
+<style>
+
+/* =========================
+   SUMMARY CARDS
+========================= */
+
+.summary-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.summary-card {
+    background: white;
+    border-radius: 14px;
+    padding: 14px 8px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.summary-number {
+    font-size: 18px;
+    font-weight: bold;
+    color: #16834a;
+}
+
+.summary-label {
+    font-size: 11px;
+    color: #777;
+    margin-top: 5px;
+}
+
+
+/* =========================
+   TABS
+========================= */
+
+.tabs {
+    display: flex;
+    background: white;
+    border-radius: 12px;
+    padding: 4px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+}
+
+.tab {
+    flex: 1;
+    border: none;
+    background: transparent;
+    padding: 10px 5px;
+    border-radius: 9px;
+    color: #777;
+    font-weight: bold;
+    font-size: 12px;
+}
+
+.tab.active {
+    background: #16834a;
+    color: white;
+}
+
+
+/* =========================
+   TRANSACTIONS
+========================= */
+
+.transaction-card {
+    background: white;
+    border-radius: 16px;
+    padding: 17px;
+    margin-bottom: 14px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.transaction-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 12px;
+}
+
+
+/* =========================
+   PROFILE
+========================= */
+
+.profile-card {
+    background: white;
+    border-radius: 18px;
+    padding: 25px 18px;
+    text-align: center;
+    margin-bottom: 22px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.profile-photo {
+    width: 75px;
+    height: 75px;
+    margin: 0 auto 12px;
+
+    background: #16834a;
+    color: white;
+
+    border-radius: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.profile-card h2 {
+    font-size: 21px;
+}
+
+.dealer-id {
+    color: #777;
+    font-size: 13px;
+    margin: 5px 0 10px;
+}
+
+.verified-badge {
+    display: inline-block;
+    background: #e4f6eb;
+    color: #16834a;
+    padding: 7px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.section-heading {
+    font-size: 16px;
+    font-weight: bold;
+    margin: 20px 2px 10px;
+}
+
+.profile-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 13px 0;
+    border-bottom: 1px solid #eee;
+
+    gap: 15px;
+}
+
+.profile-row:last-child {
+    border-bottom: none;
+}
+
+.profile-row span {
+    color: #777;
+    font-size: 13px;
+}
+
+.profile-row strong {
+    font-size: 13px;
+    text-align: right;
+}
+
+
+/* =========================
+   TOGGLE SWITCH
+========================= */
+
+.switch {
+    position: relative;
+    width: 46px;
+    height: 25px;
+}
+
+.switch input {
+    display: none;
+}
+
+.slider {
+    position: absolute;
+    inset: 0;
+
+    background: #ccc;
+    border-radius: 25px;
+
+    transition: 0.2s;
+}
+
+.slider:before {
+    content: "";
+
+    position: absolute;
+
+    width: 19px;
+    height: 19px;
+
+    left: 3px;
+    top: 3px;
+
+    background: white;
+    border-radius: 50%;
+
+    transition: 0.2s;
+}
+
+.switch input:checked + .slider {
+    background: #16834a;
+}
+
+.switch input:checked + .slider:before {
+    transform: translateX(21px);
+}
+
+
+/* =========================
+   PROFILE ACTIONS
+========================= */
+
+.profile-action {
+    width: 100%;
+
+    background: white;
+
+    border: none;
+    border-bottom: 1px solid #eee;
+
+    padding: 15px 0;
+
+    display: flex;
+    justify-content: space-between;
+
+    font-size: 14px;
+    color: #333;
+}
+
+.profile-action:last-child {
+    border-bottom: none;
+}
+
+.profile-action.logout {
+    color: #c33;
+}
+
+
+/* =========================
+   MODALS
+========================= */
+
+.modal {
+    display: none;
+
+    position: fixed;
+
+    inset: 0;
+
+    background: rgba(0,0,0,0.45);
+
+    z-index: 100;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+}
+
+.modal.show {
+    display: flex;
+}
+
+.modal-box {
+    background: white;
+
+    width: 100%;
+    max-width: 430px;
+
+    max-height: 90vh;
+
+    overflow-y: auto;
+
+    border-radius: 20px;
+
+    padding: 24px;
+
+    position: relative;
+}
+
+.close-btn {
+    position: absolute;
+
+    right: 15px;
+    top: 12px;
+
+    width: 32px;
+    height: 32px;
+
+    border: none;
+
+    background: #f1f1f1;
+
+    border-radius: 50%;
+
+    font-size: 22px;
+    color: #555;
+}
+
+.receipt-logo {
+    width: 48px;
+    height: 48px;
+
+    background: #16834a;
+    color: white;
+
+    border-radius: 13px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-weight: bold;
+    font-size: 18px;
+
+    margin-bottom: 12px;
+}
+
+.modal-box h2 {
+    font-size: 21px;
+}
+
+.receipt-subtitle {
+    color: #777;
+    font-size: 13px;
+    margin-top: 4px;
+    margin-bottom: 20px;
+}
+
+
+/* =========================
+   RECEIPT
+========================= */
+
+.receipt-details {
+    border-top: 1px solid #eee;
+}
+
+.receipt-details div {
+    display: flex;
+    justify-content: space-between;
+
+    padding: 12px 0;
+
+    border-bottom: 1px solid #eee;
+
+    gap: 15px;
+}
+
+.receipt-details span {
+    color: #777;
+    font-size: 13px;
+}
+
+.receipt-details strong {
+    font-size: 13px;
+    text-align: right;
+}
+
+.receipt-success {
+    background: #e4f6eb;
+    color: #16834a;
+
+    padding: 11px;
+
+    border-radius: 10px;
+
+    text-align: center;
+
+    font-size: 13px;
+    font-weight: bold;
+
+    margin: 18px 0;
+}
+
+
+/* =========================
+   OFFER FORM
+========================= */
+
+.offer-summary {
+    background: #f6f8f7;
+
+    border-radius: 12px;
+
+    padding: 12px;
+
+    margin-bottom: 18px;
+}
+
+.offer-summary div {
+    display: flex;
+    justify-content: space-between;
+
+    padding: 8px 0;
+
+    font-size: 13px;
+}
+
+.offer-summary span {
+    color: #777;
+}
+
+.input-label {
+    display: block;
+
+    font-size: 13px;
+    font-weight: bold;
+
+    margin-bottom: 7px;
+}
+
+.price-input {
+    display: flex;
+    align-items: center;
+
+    border: 1px solid #ddd;
+
+    border-radius: 10px;
+
+    padding: 0 12px;
+
+    margin-bottom: 15px;
+}
+
+.price-input input {
+    width: 100%;
+
+    border: none;
+    outline: none;
+
+    padding: 13px 8px;
+
+    font-size: 15px;
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 450px) {
+
+    .summary-grid {
+        gap: 7px;
+    }
+
+    .summary-card {
+        padding: 12px 5px;
+    }
+
+    .summary-number {
+        font-size: 16px;
+    }
+
+    .summary-label {
+        font-size: 10px;
+    }
+
+}
+
+
+/* =========================
+   DESKTOP
+========================= */
+
+@media (min-width: 700px) {
+
+    .summary-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+}
+
+</style>
+
+
+<script>
+
+/* =========================
+   PAGE NAVIGATION
+========================= */
+
+function showPage(pageId, button) {
+
+    const pages = document.querySelectorAll(".page");
+
+    pages.forEach(function(page) {
+        page.classList.remove("active");
+    });
+
+
+    document.getElementById(pageId).classList.add("active");
+
+
+    const buttons = document.querySelectorAll(".nav-btn");
+
+    buttons.forEach(function(btn) {
+        btn.classList.remove("active");
+    });
+
+
+    button.classList.add("active");
+
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+}
+
+
+/* =========================
+   MESSAGE
+========================= */
+
+function showMessage(message) {
+
+    alert(message);
+
+}
+
+
+/* =========================
+   MY SCRAPS TABS
+========================= */
+
+function scrapTab(type, button) {
+
+    document.getElementById("activeScraps").style.display = "none";
+
+    document.getElementById("readyScraps").style.display = "none";
+
+    document.getElementById("collectedScraps").style.display = "none";
+
+
+    if (type === "active") {
+        document.getElementById("activeScraps").style.display = "block";
+    }
+
+    if (type === "ready") {
+        document.getElementById("readyScraps").style.display = "block";
+    }
+
+    if (type === "collected") {
+        document.getElementById("collectedScraps").style.display = "block";
+    }
+
+
+    document.querySelectorAll("#scrapsPage .tab").forEach(function(tab) {
+        tab.classList.remove("active");
+    });
+
+    button.classList.add("active");
+}
+
+
+/* =========================
+   OFFERS TABS
+========================= */
+
+function offerTab(type, button) {
+
+    document.getElementById("acceptedOffers").style.display = "none";
+
+    document.getElementById("pendingOffers").style.display = "none";
+
+    document.getElementById("rejectedOffers").style.display = "none";
+
+
+    if (type === "accepted") {
+        document.getElementById("acceptedOffers").style.display = "block";
+    }
+
+    if (type === "pending") {
+        document.getElementById("pendingOffers").style.display = "block";
+    }
+
+    if (type === "rejected") {
+        document.getElementById("rejectedOffers").style.display = "block";
+    }
+
+
+    document.querySelectorAll("#offersPage .tab").forEach(function(tab) {
+        tab.classList.remove("active");
+    });
+
+    button.classList.add("active");
+}
+
+
+/* =========================
+   TRANSACTION FILTER
+========================= */
+
+function transactionFilter(type, button) {
+
+    const transactions =
+        document.querySelectorAll(".transaction-card");
+
+
+    transactions.forEach(function(transaction) {
+
+        const payment =
+            transaction.getAttribute("data-payment");
+
+
+        if (type === "all") {
+
+            transaction.style.display = "block";
+
+        }
+
+        else if (payment === type) {
+
+            transaction.style.display = "block";
+
+        }
+
+        else {
+
+            transaction.style.display = "none";
+
+        }
+
+    });
+
+
+    document.querySelectorAll("#transactionsPage .tab")
+        .forEach(function(tab) {
+
+            tab.classList.remove("active");
+
+        });
+
+
+    button.classList.add("active");
+}
+
+
+/* =========================
+   OFFER MODAL
+========================= */
+
+function openOffer(material, collector, quantity, distance) {
+
+    document.getElementById("offerMaterial").textContent = material;
+
+    document.getElementById("offerCollector").textContent = collector;
+
+    document.getElementById("offerQuantity").textContent = quantity;
+
+    document.getElementById("offerDistance").textContent = distance;
+
+
+    document.getElementById("offerPrice").value = "";
+
+
+    document.getElementById("offerModal")
+        .classList.add("show");
+
+}
+
+
+function closeOffer() {
+
+    document.getElementById("offerModal")
+        .classList.remove("show");
+
+}
+
+
+function sendOffer() {
+
+    const price =
+        document.getElementById("offerPrice").value;
+
+
+    if (price === "") {
+
+        alert("Please enter your offer price.");
+
+        return;
+
+    }
+
+
+    alert(
+        "Offer sent successfully at ₹" +
+        price +
+        "/kg"
+    );
+
+
+    closeOffer();
+
+}
+
+
+/* =========================
+   RECEIPT MODAL
+========================= */
+
+function viewReceipt(
+    material,
+    collector,
+    weight,
+    amount,
+    payment,
+    date,
+    id
+) {
+
+    document.getElementById("receiptMaterial").textContent = material;
+
+    document.getElementById("receiptCollector").textContent = collector;
+
+    document.getElementById("receiptWeight").textContent = weight;
+
+    document.getElementById("receiptAmount").textContent = amount;
+
+    document.getElementById("receiptPayment").textContent = payment;
+
+    document.getElementById("receiptDate").textContent = date;
+
+    document.getElementById("receiptId").textContent = id;
+
+
+    document.getElementById("receiptModal")
+        .classList.add("show");
+
+}
+
+
+function closeReceipt() {
+
+    document.getElementById("receiptModal")
+        .classList.remove("show");
+
+}
+
+
+/* =========================
+   PICKUP TOGGLE
+========================= */
+
+function togglePickup() {
+
+    const toggle =
+        document.getElementById("pickupToggle");
+
+
+    if (toggle.checked) {
+
+        alert("Pickup availability: ON");
+
+    }
+
+    else {
+
+        alert("Pickup availability: OFF");
+
+    }
+
+}
+
+
+/* =========================
+   CLOSE MODALS
+   WHEN CLICKING OUTSIDE
+========================= */
+
+window.addEventListener("click", function(event) {
+
+    const offerModal =
+        document.getElementById("offerModal");
+
+    const receiptModal =
+        document.getElementById("receiptModal");
+
+
+    if (event.target === offerModal) {
+
+        closeOffer();
+
+    }
+
+
+    if (event.target === receiptModal) {
+
+        closeReceipt();
+
+    }
+
+});
+
+</script>
+
+
+</body>
+</html>

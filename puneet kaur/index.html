@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Digi ScrapLink - Login</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f5f7f6;
+    color: #222;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.auth-container {
+    width: 100%;
+    max-width: 430px;
+}
+
+/* Logo */
+
+.logo-section {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.logo {
+    width: 70px;
+    height: 70px;
+    background: #16834a;
+    color: white;
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.logo-section h1 {
+    margin-top: 12px;
+    font-size: 26px;
+}
+
+.logo-section p {
+    color: #777;
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+/* Card */
+
+.auth-card {
+    background: white;
+    border-radius: 20px;
+    padding: 25px 22px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.07);
+}
+
+.form {
+    display: none;
+}
+
+.form.active-form {
+    display: block;
+}
+
+.form h2 {
+    font-size: 22px;
+    margin-bottom: 6px;
+}
+
+.form-subtitle {
+    color: #777;
+    font-size: 13px;
+    margin-bottom: 22px;
+}
+
+/* Inputs */
+
+.input-group {
+    margin-bottom: 16px;
+}
+
+.input-group label {
+    display: block;
+    font-size: 13px;
+    font-weight: bold;
+    margin-bottom: 7px;
+}
+
+.input-group input,
+.input-group select {
+    width: 100%;
+    padding: 13px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    font-size: 14px;
+    outline: none;
+}
+
+.input-group input:focus,
+.input-group select:focus {
+    border-color: #16834a;
+}
+
+/* Button */
+
+.primary-btn {
+    width: 100%;
+    border: none;
+    background: #16834a;
+    color: white;
+    padding: 13px;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 5px;
+}
+
+.primary-btn:hover {
+    background: #116b3d;
+}
+
+/* Switch */
+
+.switch-text {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 13px;
+    color: #777;
+}
+
+.switch-text button {
+    border: none;
+    background: none;
+    color: #16834a;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* Role selection */
+
+.role-title {
+    font-size: 13px;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.role-selection {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 17px;
+}
+
+.role-card {
+    flex: 1;
+    border: 1px solid #ddd;
+    background: white;
+    padding: 15px 8px;
+    border-radius: 12px;
+    cursor: pointer;
+    text-align: center;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.role-card span {
+    display: block;
+    font-size: 25px;
+    margin-bottom: 7px;
+}
+
+.role-card.selected {
+    border: 2px solid #16834a;
+    background: #eaf7ef;
+    color: #16834a;
+}
+
+/* Small screen */
+
+@media (max-width: 400px) {
+    .auth-card {
+        padding: 22px 18px;
+    }
+
+    .logo {
+        width: 62px;
+        height: 62px;
+    }
+
+    .logo-section h1 {
+        font-size: 23px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="auth-container">
+
+    <!-- Logo -->
+    <div class="logo-section">
+        <div class="logo">DG</div>
+        <h1>DG ScrapLink</h1>
+        <p>Connecting Scrap Collectors & Recyclers</p>
+    </div>
+
+
+    <div class="auth-card">
+
+        <!-- ================= LOGIN ================= -->
+
+        <div id="loginForm" class="form active-form">
+
+            <h2>Welcome Back</h2>
+
+            <p class="form-subtitle">
+                Login to your DG ScrapLink account
+            </p>
+
+            <div class="input-group">
+                <label>Email</label>
+
+                <input
+                    type="email"
+                    id="loginEmail"
+                    placeholder="Enter your email"
+                >
+            </div>
+
+            <div class="input-group">
+                <label>Password</label>
+
+                <input
+                    type="password"
+                    id="loginPassword"
+                    placeholder="Enter your password"
+                >
+            </div>
+
+            <button
+                class="primary-btn"
+                id="loginButton"
+                onclick="loginUser()"
+            >
+                Login
+            </button>
+
+            <div class="switch-text">
+                Don't have an account?
+
+                <button onclick="showRegister()">
+                    Register
+                </button>
+            </div>
+
+        </div>
+
+
+        <!-- ================= REGISTER ================= -->
+
+        <div id="registerForm" class="form">
+
+            <h2>Create Account</h2>
+
+            <p class="form-subtitle">
+                Join the DG ScrapLink network
+            </p>
+
+
+            <div class="input-group">
+
+                <label>Full Name</label>
+
+                <input
+                    type="text"
+                    id="registerName"
+                    placeholder="Enter your full name"
+                >
+
+            </div>
+
+
+            <div class="input-group">
+
+                <label>Phone Number</label>
+
+                <input
+                    type="tel"
+                    id="registerPhone"
+                    placeholder="Enter your phone number"
+                >
+
+            </div>
+
+
+            <div class="input-group">
+
+                <label>Email</label>
+
+                <input
+                    type="email"
+                    id="registerEmail"
+                    placeholder="Enter your email"
+                >
+
+            </div>
+
+
+            <div class="input-group">
+
+                <label>Password</label>
+
+                <input
+                    type="password"
+                    id="registerPassword"
+                    placeholder="Create a password"
+                >
+
+            </div>
+
+
+            <!-- Role -->
+
+            <div class="role-title">
+                I am a:
+            </div>
+
+            <div class="role-selection">
+
+                <button
+                    type="button"
+                    class="role-card"
+                    onclick="selectRole('collector', this)"
+                >
+                    <span>♻️</span>
+                    Collector
+                </button>
+
+
+                <button
+                    type="button"
+                    class="role-card"
+                    onclick="selectRole('dealer', this)"
+                >
+                    <span>🏪</span>
+                    Dealer
+                </button>
+
+            </div>
+
+            <input
+                type="hidden"
+                id="selectedRole"
+                value=""
+            >
+
+
+            <button
+                class="primary-btn"
+                id="registerButton"
+                onclick="registerUser()"
+            >
+                Create Account
+            </button>
+
+
+            <div class="switch-text">
+
+                Already have an account?
+
+                <button onclick="showLogin()">
+                    Login
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* ================================
+   LOGIN / REGISTER SWITCH
+================================ */
+
+function showRegister() {
+
+    document
+        .getElementById("loginForm")
+        .classList.remove("active-form");
+
+    document
+        .getElementById("registerForm")
+        .classList.add("active-form");
+}
+
+
+function showLogin() {
+
+    document
+        .getElementById("registerForm")
+        .classList.remove("active-form");
+
+    document
+        .getElementById("loginForm")
+        .classList.add("active-form");
+}
+
+
+/* ================================
+   ROLE SELECTION
+================================ */
+
+function selectRole(role, button) {
+
+    const roleCards =
+        document.querySelectorAll(".role-card");
+
+    roleCards.forEach(function(card) {
+
+        card.classList.remove("selected");
+
+    });
+
+    button.classList.add("selected");
+
+    document
+        .getElementById("selectedRole")
+        .value = role;
+}
+
+
+/* ================================
+   DEMO REGISTER
+================================ */
+
+function registerUser() {
+
+   
+
+    const name = document.getElementById("registerName").value;
+    const phone = document.getElementById("registerPhone").value;
+    const email = document.getElementById("registerEmail").value;
+    const password = document.getElementById("registerPassword").value;
+    const role = document.getElementById("selectedRole").value;
+
+    if (
+        name === "" ||
+        phone === "" ||
+        email === "" ||
+        password === "" ||
+        role === ""
+    ) {
+        alert("Please fill all details and select your role.");
+        return;
+    }
+
+    alert("Account created successfully!");
+
+    if (role === "collector") {
+        window.location.href = "collector.html";
+    }
+
+    else if (role === "dealer") {
+        window.location.href = "dealer.html";
+    }
+} 
+
+ 
+
+
+
+/* ================================
+   DEMO LOGIN
+================================ */
+
+function loginUser() {
+
+    const email =
+        document.getElementById("loginEmail").value;
+
+    const password =
+        document.getElementById("loginPassword").value;
+
+
+    if (email === "" || password === "") {
+
+        alert("Please enter your email and password.");
+
+        return;
+    }
+
+
+    /*
+       DEMO LOGIN
+
+       For now we simply demonstrate
+       the login flow.
+
+       Supabase authentication can be
+       connected later.
+    */
+
+
+    const role =
+        prompt(
+            "Demo login:\n\nEnter collector or dealer"
+        );
+
+
+    if (role === "collector") {
+
+        window.location.href = "collector.html";
+
+    }
+
+    else if (role === "dealer") {
+
+        window.location.href = "dealer.html";
+
+    }
+
+    else {
+
+        alert(
+            "Please enter either collector or dealer."
+        );
+
+    }
+}
+
+</script>
+
+</body>
+</html>

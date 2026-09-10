@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>DG ScrapLink</title>
+
+    <style>
+
+         *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f7f4;
+            padding-bottom: 80px;
+        }
+
+        /* ================= HEADER ================= */
+
+        header {
+            background-color: white;
+            padding: 20px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        header h1 {
+            font-size: 24px;
+        }
+
+        header p {
+            margin-top: 5px;
+            color: #666;
+            font-size: 14px;
+        }
+
+        /* ================= PAGES ================= */
+
+        .page {
+            display: none;
+            padding: 20px;
+        }
+
+        .page.active-page {
+            display: block;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: auto;
+        }
+
+        /* ================= ADD SCRAP ================= */
+
+        .picture-box {
+            height: 180px;
+            border: 2px dashed #777;
+            border-radius: 15px;
+            background: white;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+
+            margin-bottom: 20px;
+            cursor: pointer;
+        }
+
+        .picture-box .icon {
+            font-size: 50px;
+        }
+
+        .picture-box p {
+            margin-top: 8px;
+            text-align: center;
+        }
+
+        label {
+            display: block;
+            margin-top: 18px;
+            margin-bottom: 7px;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            font-size: 16px;
+        }
+
+        .voice-box {
+            width: 100%;
+            padding: 18px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            cursor: pointer;
+            background: white;
+        }
+
+        .submit-btn,
+        .accept-btn,
+        .edit-btn {
+            width: 100%;
+            padding: 14px;
+            margin-top: 20px;
+            border: none;
+            border-radius: 10px;
+            background-color: #218c3a;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* ================= FIND DEALERS ================= */
+
+        .dealer-card {
+            background: white;
+            border-radius: 15px;
+            padding: 18px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .dealer-info {
+            flex: 1;
+        }
+
+        .dealer-name {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .dealer-detail {
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 6px;
+        }
+
+        .view-btn {
+            background-color: #218c3a;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        /* ================= RECEIPT LOG ================= */
+
+        .receipt-card {
+            background: white;
+            border-radius: 15px;
+            padding: 18px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            cursor: pointer;
+        }
+
+        .receipt-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .amount {
+            color: #218c3a;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .material {
+            margin-top: 10px;
+            color: #555;
+        }
+
+        .date {
+            margin-top: 5px;
+            font-size: 13px;
+            color: #777;
+        }
+
+        .receipt-details {
+            display: none;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #ddd;
+        }
+
+        .receipt-card.open .receipt-details {
+            display: block;
+        }
+
+        .detail {
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        /* ================= MY OFFERS ================= */
+
+        .offer-card {
+            background: white;
+            border-radius: 15px;
+            padding: 18px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .offer-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .price {
+            color: #218c3a;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .offer-detail {
+            margin-top: 8px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .pickup {
+            display: inline-block;
+            margin-top: 12px;
+            padding: 7px 10px;
+            border-radius: 8px;
+            background: #e6f4ea;
+            color: #218c3a;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .no-pickup {
+            background: #eeeeee;
+            color: #666;
+        }
+
+        /* ================= PROFILE ================= */
+
+        .profile-card {
+            background: white;
+            border-radius: 18px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .profile-picture {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: #e5e5e5;
+            margin: auto;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            font-size: 50px;
+        }
+
+        .profile-name {
+            font-size: 22px;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+
+        .profile-role {
+            color: #218c3a;
+            margin-top: 5px;
+            margin-bottom: 20px;
+        }
+
+        .details {
+            text-align: left;
+        }
+
+        .detail-item {
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .detail-item strong {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .qr-section {
+            margin-top: 25px;
+            padding: 20px;
+            background: #f1f8f2;
+            border-radius: 15px;
+        }
+
+        .qr-section h3 {
+            margin-bottom: 8px;
+        }
+
+        .qr-section p {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .qr-code {
+            width: 150px;
+            height: 150px;
+            background: white;
+            border: 2px solid #333;
+            margin: auto;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            font-size: 45px;
+        }
+
+        /* ================= BOTTOM NAVIGATION ================= */
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+
+            width: 100%;
+            background: white;
+
+            display: flex;
+            justify-content: space-around;
+
+            padding: 10px 5px;
+
+            border-top: 1px solid #ddd;
+        }
+
+        .nav-item {
+            border: none;
+            background: none;
+            color: #555;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            font-size: 10px;
+            cursor: pointer;
+        }
+
+        .nav-item span {
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+
+        .nav-item.active {
+            color: #218c3a;
+            font-weight: bold;
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+
+<!-- ================= ADD SCRAP PAGE ================= -->
+
+<div id="addScrap" class="page active-page">
+
+    <header>
+        <h1>Add Scrap</h1>
+        <p>Add your scrap details</p>
+    </header>
+
+    <div class="container">
+
+        <div class="picture-box">
+            <div class="icon">📷</div>
+            <p><b>Take or Add a Picture</b></p>
+            <p>Tap here to upload scrap photo</p>
+        </div>
+
+        <label>🎤 Describe Your Scrap by Voice</label>
+
+        <button class="voice-box">
+            🎤 Tap to Record Voice
+        </button>
+
+        <label>What Type of Material is This?</label>
+
+        <input type="text" placeholder="Example: Copper Wire">
+
+        <label>Weight</label>
+
+        <input type="number" placeholder="Enter weight in kg">
+
+        <label>Your Expected Price</label>
+
+        <input type="number" placeholder="Enter expected price ₹">
+
+        <button class="submit-btn">
+            Add Scrap Listing
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- ================= FIND DEALERS PAGE ================= -->
+
+<div id="findDealers" class="page">
+
+    <header>
+        <h1>Find Dealers</h1>
+        <p>Find recycling dealers near you</p>
+    </header>
+
+    <div class="container">
+
+        <div class="dealer-card">
+
+            <div class="dealer-info">
+
+                <div class="dealer-name">🏭 GreenCycle Recycling</div>
+
+                <div class="dealer-detail">
+                    ♻️ Accepts: Metal, Plastic, E-Waste
+                </div>
+
+                <div class="dealer-detail">
+                    📍 Patiala
+                </div>
+
+                <div class="dealer-detail">
+                    📏 2.3 km away
+                </div>
+
+            </div>
+
+            <button class="view-btn">View Details</button>
+
+        </div>
+
+
+        <div class="dealer-card">
+
+            <div class="dealer-info">
+
+                <div class="dealer-name">🏭 EcoScrap Dealers</div>
+
+                <div class="dealer-detail">
+                    ♻️ Accepts: Copper, Iron, Wires
+                </div>
+
+                <div class="dealer-detail">
+                    📍 Rajpura
+                </div>
+
+                <div class="dealer-detail">
+                    📏 5.6 km away
+                </div>
+
+            </div>
+
+            <button class="view-btn">View Details</button>
+
+        </div>
+
+
+        <div class="dealer-card">
+
+            <div class="dealer-info">
+
+                <div class="dealer-name">🏭 SmartRecycle Hub</div>
+
+                <div class="dealer-detail">
+                    ♻️ Accepts: Batteries, Electronics
+                </div>
+
+                <div class="dealer-detail">
+                    📍 Chandigarh
+                </div>
+
+                <div class="dealer-detail">
+                    📏 8.1 km away
+                </div>
+
+            </div>
+
+            <button class="view-btn">View Details</button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ================= RECEIPT LOG PAGE ================= -->
+
+<div id="receiptLog" class="page">
+
+    <header>
+        <h1>Receipt Log</h1>
+        <p>Your completed transactions</p>
+    </header>
+
+    <div class="container">
+
+        <div class="receipt-card" onclick="toggleReceipt(this)">
+
+            <div class="receipt-top">
+
+                <div class="dealer-name">
+                    🏭 GreenCycle Recycling
+                </div>
+
+                <div class="amount">₹1,250</div>
+
+            </div>
+
+            <div class="material">♻️ Copper Wire</div>
+
+            <div class="date">📅 8 September 2026</div>
+
+            <div class="receipt-details">
+
+                <div class="detail"><b>Dealer:</b> GreenCycle Recycling</div>
+
+                <div class="detail"><b>Material:</b> Copper Wire</div>
+
+                <div class="detail"><b>Weight:</b> 5 kg</div>
+
+                <div class="detail"><b>Amount Received:</b> ₹1,250</div>
+
+                <div class="detail"><b>Payment Status:</b> Paid ✅</div>
+
+            </div>
+
+        </div>
+
+
+        <div class="receipt-card" onclick="toggleReceipt(this)">
+
+            <div class="receipt-top">
+
+                <div class="dealer-name">
+                    🏭 EcoScrap Dealers
+                </div>
+
+                <div class="amount">₹850</div>
+
+            </div>
+
+            <div class="material">♻️ Old Batteries</div>
+
+            <div class="date">📅 5 September 2026</div>
+
+            <div class="receipt-details">
+
+                <div class="detail"><b>Dealer:</b> EcoScrap Dealers</div>
+
+                <div class="detail"><b>Material:</b> Old Batteries</div>
+
+                <div class="detail"><b>Weight:</b> 10 kg</div>
+
+                <div class="detail"><b>Amount Received:</b> ₹850</div>
+
+                <div class="detail"><b>Payment Status:</b> Paid ✅</div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ================= MY OFFERS PAGE ================= -->
+
+<div id="myOffers" class="page">
+
+    <header>
+        <h1>My Offers</h1>
+        <p>Compare offers received from dealers</p>
+    </header>
+
+    <div class="container">
+
+        <!-- Offer 1 -->
+
+        <div class="offer-card">
+
+            <div class="offer-top">
+
+                <div class="dealer-name">
+                    🏭 GreenCycle Recycling
+                </div>
+
+                <div class="price">₹1,250</div>
+
+            </div>
+
+            <div class="offer-detail">
+                ♻️ <b>Material:</b> Copper Wire
+            </div>
+
+            <div class="offer-detail">
+                📍 <b>Location:</b> Patiala
+            </div>
+
+            <div class="offer-detail">
+                📏 <b>Distance:</b> 2.3 km away
+            </div>
+
+            <div class="pickup">
+                🚚 Pickup Available
+            </div>
+
+            <button class="accept-btn">Accept Offer</button>
+
+        </div>
+
+
+        <!-- Offer 2 -->
+
+        <div class="offer-card">
+
+            <div class="offer-top">
+
+                <div class="dealer-name">
+                    🏭 EcoScrap Dealers
+                </div>
+
+                <div class="price">₹1,400</div>
+
+            </div>
+
+            <div class="offer-detail">
+                ♻️ <b>Material:</b> Copper Wire
+            </div>
+
+            <div class="offer-detail">
+                📍 <b>Location:</b> Rajpura
+            </div>
+
+            <div class="offer-detail">
+                📏 <b>Distance:</b> 5.6 km away
+            </div>
+
+            <div class="pickup">
+                🚚 Pickup Available
+            </div>
+
+            <button class="accept-btn">Accept Offer</button>
+
+        </div>
+
+
+        <!-- Offer 3 -->
+
+        <div class="offer-card">
+
+            <div class="offer-top">
+
+                <div class="dealer-name">
+                    🏭 SmartRecycle Hub
+                </div>
+
+                <div class="price">₹1,350</div>
+
+            </div>
+
+            <div class="offer-detail">
+                ♻️ <b>Material:</b> Copper Wire
+            </div>
+
+            <div class="offer-detail">
+                📍 <b>Location:</b> Chandigarh
+            </div>
+
+            <div class="offer-detail">
+                📏 <b>Distance:</b> 8.1 km away
+            </div>
+
+            <div class="pickup no-pickup">
+                ❌ Pickup Not Available
+            </div>
+
+            <button class="accept-btn">Accept Offer</button>
+
+        </div>
+
+
+        <!-- Offer 4 -->
+
+        <div class="offer-card">
+
+            <div class="offer-top">
+
+                <div class="dealer-name">
+                    🏭 Green Earth Scrap
+                </div>
+
+                <div class="price">₹1,500</div>
+
+            </div>
+
+            <div class="offer-detail">
+                ♻️ <b>Material:</b> Copper Wire
+            </div>
+
+            <div class="offer-detail">
+                📍 <b>Location:</b> Mohali
+            </div>
+
+            <div class="offer-detail">
+                📏 <b>Distance:</b> 12 km away
+            </div>
+
+            <div class="pickup">
+                🚚 Pickup Available
+            </div>
+
+            <button class="accept-btn">Accept Offer</button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ================= PROFILE PAGE ================= -->
+
+<div id="profile" class="page">
+
+    <header>
+        <h1>My Profile</h1>
+    </header>
+
+    <div class="container">
+
+        <div class="profile-card">
+
+            <div class="profile-picture">
+                👤
+            </div>
+
+            <div class="profile-name">
+                Rahul Kumar
+            </div>
+
+            <div class="profile-role">
+                ♻️ Scrap Collector
+            </div>
+
+
+            <div class="details">
+
+                <div class="detail-item">
+
+                    <strong>📞 Phone Number</strong>
+
+                    +91 98765 43210
+
+                </div>
+
+
+                <div class="detail-item">
+
+                    <strong>📍 Location</strong>
+
+                    Patiala, Punjab
+
+                </div>
+
+
+                <div class="detail-item">
+
+                    <strong>🧾 Collector ID</strong>
+
+                    DGSL-10245
+
+                </div>
+
+            </div>
+
+
+            <div class="qr-section">
+
+                <h3>💳 Receive Payment</h3>
+
+                <p>
+                    Show this QR code to the dealer to receive payment.
+                </p>
+
+                <div class="qr-code">
+                    ▣
+                </div>
+
+            </div>
+
+
+            <button class="edit-btn">
+                ✏️ Edit Profile
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ================= BOTTOM NAVIGATION ================= -->
+
+<nav class="bottom-nav">
+
+    <button class="nav-item active" onclick="showPage('addScrap', this)">
+        <span>➕</span>
+        Add Scrap
+    </button>
+
+
+    <button class="nav-item" onclick="showPage('findDealers', this)">
+        <span>📍</span>
+        Find Dealers
+    </button>
+
+
+    <button class="nav-item" onclick="showPage('receiptLog', this)">
+        <span>🧾</span>
+        Receipt Log
+    </button>
+
+
+    <button class="nav-item" onclick="showPage('myOffers', this)">
+        <span>💰</span>
+        My Offers
+    </button>
+
+
+    <button class="nav-item" onclick="showPage('profile', this)">
+        <span>👤</span>
+        Profile
+    </button>
+
+</nav>
+
+
+<!-- ================= JAVASCRIPT ================= -->
+
+<script>
+
+    /* Change Pages */
+
+    function showPage(pageId, button) {
+
+        /* Hide all pages */
+
+        const pages = document.querySelectorAll(".page");
+
+        pages.forEach(function(page) {
+            page.classList.remove("active-page");
+        });
+
+
+        /* Show selected page */
+
+        document.getElementById(pageId)
+            .classList.add("active-page");
+
+
+        /* Remove active navigation */
+
+        const navItems = document.querySelectorAll(".nav-item");
+
+        navItems.forEach(function(item) {
+            item.classList.remove("active");
+        });
+
+
+        /* Highlight selected navigation */
+
+        button.classList.add("active");
+    }
+
+
+
+    /* Open / Close Receipt */
+
+    function toggleReceipt(card) {
+
+        card.classList.toggle("open");
+
+    }
+
+</script>
+
+
+</body>
+</html>
